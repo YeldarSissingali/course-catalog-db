@@ -22,3 +22,5 @@ CREATE TABLE enrollments (
     enrolled_at timestamptz NOT NULL DEFAULT now(),
     UNIQUE (course_id, student_id)
 );
+
+CREATE INDEX enrollments_student_id_idx ON enrollments (student_id);
