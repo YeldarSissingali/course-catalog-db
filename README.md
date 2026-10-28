@@ -32,3 +32,15 @@ Query: `SELECT * FROM enrollments WHERE student_id = 777;`
 ### Sizes
 - `enrollments` table size: ~3128 kB
 - `enrollments_student_id_idx` index size: ~1112 kB
+
+
+
+## Transaction Isolation & Rollback Notes
+
+### Failed Transaction Rollback
+When an error occurs inside an explicit transaction block (`BEGIN ... END`), PostgreSQL marks the transaction as aborted. Any subsequent commands execution is rejected until an explicit `ROLLBACK` is executed. As a result, operations prior to the error (such as inserting 'Sarkytkali Dias') are entirely discarded, keeping the database in a consistent state.
+
+### Transaction Isolation (Read Committed)
+Under PostgreSQL's default `Read Committed` isolation level:
+- Uncommitted changes made in Terminal A remain invisible to concurrent queries in Terminal B (returning `count = 0`).
+- Immediately after `COMMIT` in Terminal A, the changes become visible to queries in Terminal B (returning `count = 1`).
